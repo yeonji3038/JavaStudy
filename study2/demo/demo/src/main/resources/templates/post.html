@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 - 글쓰기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap");
+
+        :root {
+            --font-2: "Castoro", serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: 'Castoro', serif;
+        }
+        .form-container {
+            width: 80%;
+            max-width: 697px;
+            margin: 75px auto;
+            padding: 20px;
+            background-color: #ccdfe0; /* 전체 폼 컨테이너 배경을 민트색으로 설정 */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .button-container {
+            text-align: right;
+            margin-top: 20px;
+        }
+        #editor-container {
+            height: 200px;
+            background-color: #ffffff; /* 글쓰기 영역의 배경을 흰색으로 설정 */
+            border-radius: 5px;
+            padding: 10px;
+            color: #333; /* 텍스트 색상 */
+        }
+        .form-control {
+            background-color: #ffffff; /* 텍스트 입력 부분을 흰색으로 설정 */
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>CREATE</h1>
+    <form action="/post" method="POST">
+        <div class="mb-3">
+            <label for="title" class="form-label">TITLE</label>
+            <input type="text" id="title" name="title" class="form-control" required placeholder="게시물 제목">
+        </div>
+
+        <div class="mb-3">
+            <label for="author" class="form-label">WRITER</label>
+            <input type="text" id="author" name="author" class="form-control" required placeholder="작성자 이름">
+        </div>
+
+        <div class="mb-3">
+            <label for="content" class="form-label">CONTENT</label>
+            <div id="editor-container"></div>
+            <input type="hidden" id="content" name="content">
+        </div>
+
+        <div class="button-container">
+            <input type="submit" class="btn btn-light btn-sm" value="SUBMIT">
+        </div>
+    </form>
+</div>
+
+<!-- Quill 및 jQuery 로드 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'font': [] }, { 'size': [] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'align': [] }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // 폼 제출 시 content에 Quill 내용 담기
+        $('form').on('submit', function() {
+            $('#content').val(quill.root.innerHTML);
+        });
+    });
+</script>
+
+</body>
+</html>
