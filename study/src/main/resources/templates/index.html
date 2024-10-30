@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <!-- sbb CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <title>Hello, SSAFY Spring Study!</title>
+</head>
+<body>
+<!-- 네비게이션바 -->
+<nav th:replace="~{navbar :: navbarFragment}"></nav>
+
+<!-- 기본 템플릿 안에 삽입될 내용 Start -->
+<th:block layout:fragment="content">
+
+    <div class="container">
+        <h1>스프링 스터디 실습</h1>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="d-flex mt-3">
+            <a href="/boardWrite" class="btn btn-primary me-2">게시글 작성</a>
+            <a href="/boardList" class="btn btn-primary">자유 게시판</a>
+        </div>
+    </div>
+<!-- 기본 템플릿 안에 삽입될 내용 End -->
+</th:block>
+
+<!-- Bootstrap JS -->
+<script th:src="@{/bootstrap.min.js}"></script>
+</body>
+</html>
