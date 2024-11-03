@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>게시글 상세보기</title>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h3 th:text="${board.title}">게시글 제목</h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text" th:text="${board.content}">게시글 내용</p>
+        </div>
+        <div class="card-footer text-muted">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <a class="btn btn-secondary" href="/boards">목록으로</a>
+                </div>
+                <div>
+                    <a class="btn btn-warning"
+                       th:href="@{/boards/{id}/edit(id=${board.id})}">수정</a>
+                    <a class="btn btn-danger"
+                       th:href="@{/boards/delete/{id}(id=${board.id})}"
+                       onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="comment : ${board.comments}">
+                <div th:text="${comment.content}"></div>
+
+            </li>
+        </ul>
+    </div>
+
+    <form th:action="@{|/comment/create/${board.id}|}" method="post">
+        <div class="form-group">
+            <label for="content">댓글 내용</label>
+            <textarea class="form-control" name="content" id="content" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">댓글 등록</button>
+    </form>
+</div>
+
+<!-- Optional JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
