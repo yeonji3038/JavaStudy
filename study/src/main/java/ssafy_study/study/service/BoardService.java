@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy_study.study.domain.Board;
@@ -33,14 +34,32 @@ public class BoardService {
         this.userService = userService;
     }
 
-    public void saveBoard(String title, String text, UserInfo author) {
+//    public void saveBoard(String title, String text, UserInfo author) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        Board board = new Board();
+//        board.setTitle(title);
+//        board.setText(text);
+//        board.setAuthor(author);
+//        boardRepository.save(board);
+//    }
+
+    public void saveBoard(String title, String content, UserInfo author) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+
 
         Board board = new Board();
         board.setTitle(title);
-        board.setText(text);
+        board.setContent(content);
         board.setAuthor(author);
         boardRepository.save(board);
+    }
+
+    public Long join(Board board) {
+        boardRepository.save(board);
+        return board.getId();
     }
 
     public List<Board> boardList() {
@@ -56,7 +75,7 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
         board.setTitle(updatedBoard.getTitle());
-        board.setText(updatedBoard.getText());
+        board.setContent(updatedBoard.getContent());
         boardRepository.save(board);
     }
 
@@ -77,5 +96,9 @@ public class BoardService {
     // 내용으로 검색
     public List<Board> searchBoardsByText(String keyword) {
         return boardRepository.findByTextContainingIgnoreCase(keyword);
+    }
+
+    public void saveBoard(Board board) {
+
     }
 }

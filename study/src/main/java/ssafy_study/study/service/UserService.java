@@ -9,6 +9,8 @@ import ssafy_study.study.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 
+import ssafy_study.study.exception.DataNotFoundException;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -49,5 +51,14 @@ public class UserService {
         }
         userInfo.setEmail(email);
         return userRepository.save(userInfo);
+    }
+
+    public UserInfo getUser(String username) {
+        Optional<UserInfo> userInfo = this.userRepository.findByUsername(username);
+        if (userInfo.isPresent()) {
+            return userInfo.get();
+        } else {
+            throw new DataNotFoundException("siteuser not found");
+        }
     }
 }

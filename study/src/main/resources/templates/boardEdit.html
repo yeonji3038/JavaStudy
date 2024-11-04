@@ -1,8 +1,16 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
   <title>게시글 수정</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+  <!-- sbb CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -95,30 +103,36 @@
   </style>
 </head>
 <body>
-<div class="board-edit">
-  <h1>게시글 수정</h1>
+<nav th:replace="~{navbar :: navbarFragment}"></nav>
+<th:block layout:fragment="content">
 
-  <!-- 수정 폼 -->
-  <form th:action="@{'/boards/update/' + ${board.id}}" th:object="${board}" method="post">
-    <label for="title">제목</label>
-    <input type="text" id="title" name="title" th:value="${board.title}" required>
+  <div class="board-edit">
+    <h1>게시글 수정</h1>
 
-    <label for="text">내용</label>
-    <textarea id="text" name="text" rows="5" th:text="${board.text}" required></textarea>
+    <!-- 수정 폼 -->
+    <form th:action="@{'/boards/update/' + ${board.id}}" th:object="${board}" method="post">
+      <label for="title">제목</label>
+      <input type="text" id="title" name="title" th:value="${board.title}" required>
 
-    <button type="submit">수정</button>
-  </form>
+      <label for="text">내용</label>
+      <textarea id="text" name="text" rows="5" th:text="${board.text}" required></textarea>
 
-  <!-- 삭제 폼 -->
-  <form th:action="@{'/boards/delete/' + ${board.id}}" method="post">
-    <input type="hidden" name="_method" value="delete"/>
-    <button type="submit" class="delete">삭제</button>
-  </form>
+      <button type="submit">수정</button>
+    </form>
 
-  <div class="back-link">
-    <a href="/boardList">게시글 목록</a>
+    <!-- 삭제 폼 -->
+    <form th:action="@{'/boards/delete/' + ${board.id}}" method="post">
+      <input type="hidden" name="_method" value="delete"/>
+      <button type="submit" class="delete">삭제</button>
+    </form>
+
+    <div class="back-link">
+      <a href="/boardList">게시글 목록</a>
+    </div>
   </div>
-</div>
-<a href="/">홈</a>
+</th:block>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

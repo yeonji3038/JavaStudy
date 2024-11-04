@@ -1,102 +1,26 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
   <title>게시글 보기</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" th:href="@{/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/style.css}">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 20px;
-    }
-
-    .board-content {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 30px;
-      background-color: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      color: #333;
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 28px;
-    }
-
-    .title {
-      font-size: 24px;
-      font-weight: bold;
-      color: #000;
-      margin-bottom: 20px;
-    }
-
-    .text-box {
-      background-color: #f8f8f8;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      padding: 15px;
-      margin-bottom: 20px;
-      font-size: 18px;
-      color: #555;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      overflow-wrap: break-word;
-    }
-
-    .button-container {
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    button {
-      background-color: #007bff;
-      color: #ffffff;
-      border: none;
-      padding: 12px 20px;
-      font-size: 18px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      display: inline-block;
-      margin: 0 5px; /* 버튼 사이 여백 */
-      width: 100%; /* 버튼 너비를 100%로 조정 */
-    }
-
-    button:hover {
-      background-color: #0056b3;
-      transform: translateY(-2px);
-    }
-
-    .delete {
-      background-color: red;
-    }
-
-    .delete:hover {
-      background-color: darkred;
-    }
-
-    .back-link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .back-link a {
-      text-decoration: none;
-      color: #0056b3;
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    .back-link a:hover {
-      text-decoration: underline;
-    }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; background-color: #f4f4f4; padding: 20px; }
+    .board-content { max-width: 800px; margin: 0 auto; padding: 30px; background-color: #ffffff; border-radius: 8px; }
+    h1 { text-align: center; margin-bottom: 30px; font-size: 28px; }
+    .title { font-size: 24px; font-weight: bold; }
+    .text-box { background-color: #f8f8f8; padding: 15px; font-size: 18px; }
+    .button-container { text-align: center; margin-top: 30px; }
+    .delete { background-color: red; }
   </style>
 </head>
 <body>
+<nav th:replace="~{navbar :: navbarFragment}"></nav>
 <div class="board-content">
   <h1>게시글 내용</h1>
 
@@ -108,7 +32,7 @@
 
   <!-- 버튼 컨테이너 -->
   <div class="button-container">
-    <a th:href="@{'/boards/edit/' + ${board.id}}" style="display:inline;">
+    <a th:href="@{'/boards/edit/' + ${board.id}}">
       <button>수정</button>
     </a>
 
@@ -123,6 +47,9 @@
     <a href="/boardList">게시글 목록</a>
   </div>
 </div>
-<a href="/">홈</a>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

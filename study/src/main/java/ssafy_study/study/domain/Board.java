@@ -12,7 +12,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String text;
+    private String content;
 
     @ManyToOne
     private UserInfo author;

@@ -1,27 +1,28 @@
 package ssafy_study.study.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ssafy_study.study.DTO.BoardForm;
+import ssafy_study.study.domain.Board;
 import ssafy_study.study.domain.UserInfo;
 import ssafy_study.study.service.BoardService;
-import ssafy_study.study.domain.Board;
+import ssafy_study.study.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Controller
 public class BoardController {
 
     private final BoardService boardService;
-
-    @Autowired
-    public BoardController(BoardService boardService) {
-        this.boardService = boardService;
-    }
+    private final UserService userService;
 
     // 게시글 작성 페이지
     @GetMapping("boardWrite")
@@ -31,12 +32,36 @@ public class BoardController {
     }
 
     // 게시글 작성 처리
+//    @PostMapping("board/save")
+//    public String saveBoard(@RequestParam String title, @RequestParam String text, RedirectAttributes redirectAttributes, Principal principal) {
+//        // 현재 사용자 정보를 가져옴
+//        UserInfo userInfo = userService.findByUsername(principal.getName())
+//                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+//
+//        // 게시글 객체 생성 및 속성 설정
+//        Board board = new Board();
+//        board.setTitle(title);
+//        board.setText(text);
+//        board.setAuthor(userInfo); // 작성자 설정
+//
+//        // 게시글 저장
+//        boardService.saveBoard(board);
+//
+//        redirectAttributes.addFlashAttribute("message", "게시글이 등록되었습니다.");
+//        return "redirect:/boardList";
+//    }
     @PostMapping("board/save")
-    public String saveBoard(Model model, @RequestParam String title, @RequestParam String text, @RequestParam UserInfo author, RedirectAttributes redirectAttributes, Authentication authentication) {
+    public String saveBoard(BoardForm form, Principal principal) {
+        Board board = new Board();
+        board.setTitle(form.getTitle());
+        board.setContent(form.getContent());
 
-        boardService.saveBoard(title, text, author);
-        redirectAttributes.addFlashAttribute("message", "게시글이 등록되었습니다.");
-        return "redirect:/boardList";
+        UserInfo user = userService.findByUsername(principal.getName())
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        board.setAuthor(user);
+
+        boardService.join(board);
+        return "redirect:/boards";
     }
 
     // 게시글 목록 페이지
@@ -90,10 +115,10 @@ public class BoardController {
 
     // 게시글 수정 처리
     @PostMapping("/boards/update/{id}")
-    public String updateBoard(@PathVariable Long id, @RequestParam String title, @RequestParam String text) {
+    public String updateBoard(@PathVariable Long id, @RequestParam String title, @RequestParam String content) {
         Board updatedBoard = new Board();
         updatedBoard.setTitle(title);
-        updatedBoard.setText(text);
+        updatedBoard.setContent(content);
         boardService.updateBoard(id, updatedBoard);
         return "redirect:/boardList";
     }
@@ -105,5 +130,4 @@ public class BoardController {
         redirectAttributes.addFlashAttribute("message", "게시글이 삭제되었습니다.");
         return "redirect:/boardList";
     }
-
 }
